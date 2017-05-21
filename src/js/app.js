@@ -5,7 +5,7 @@ $(() => {
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
-  // Variables that updates during the game, based on turn/abilties used.
+  // Variables that update during the game, based on turn/abilties used.
   let $track = $('.track1');
   let playerOneTurn = true;
   let PlayerOneBoostRemaining = 1;
@@ -52,7 +52,7 @@ $(() => {
     }
   }
 
-// This function locates gary on the board, the seperate parts of the if else statement run based onw hich places turn it is, once doing so it fires off the moveGary function.
+// This function locates gary on the board, the seperate parts of the if else statement run based on which players turn it is, once doing so it fires off the moveGary function. Or if it detects the boost has been used(by it updating from 1 to 0 on the boost button click) if fires off the boostGary function instead, it then updates the boost count to 2 which informs the user the boost has been used when clicked.
   function locateGary(){
     if(playerOneTurn){
       index = $('.track1.player').index();
@@ -73,20 +73,22 @@ $(() => {
     }
   }
 
-  // This function moves gary, it first determines if it is a regular move or a boost move, if it is a regular move it moves the current players Gary between 1 and 3 index spaces along, if boost is used it gives a guarenteed 5 space move.
+  // This function moves gary, it first determines if it is a regular move or a boost move, if it is a regular move it moves the current players Gary between 1 and 3 index spaces along, finally, it runs the checkWinner function to see if a win condition has been met.
   function moveGary() {
     $track.eq(index).removeClass('player');
     $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
     checkWinner();
   }
 
-// This function fires off if the boost button is clicked. it updates each players boostUsed boolean, then runs the other functions as normal.
+// This function fires off if the boost button is clicked on, the click event updates the boost count and this function is called when the locateGary is running. It guarentees the user a move of 5 spaces then runs the check winner function to see if a win condition has been met.
   function boostGary() {
     $track.eq(index).removeClass('player');
     $track.eq(index + 5).addClass('player');
     checkWinner();
   }
 // various event listeners below.
+
+// This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions.
   $move.on('click', determineTurn);
 
 // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
