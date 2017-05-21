@@ -14,16 +14,20 @@ body {
 }
 .track1 {
   height: 48px;
-  width: 38px;
+  width: 30px;
   display: inline-block;
   background-color: white;
   border: 1px solid black;
 }
 .track2 {
   height: 48px;
-  width: 38px;
+  width: 30px;
   display: inline-block;
   background-color: white;
+  border: 1px solid black;
+}
+.controller {
+  display: inline-block;
   border: 1px solid black;
 }
 .player{
@@ -31,4 +35,7 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+.hide{
+  display: none;
 }
