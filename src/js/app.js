@@ -1,12 +1,12 @@
 $(() => {
   // List of variables needed for the game
   const $move = $('.move');
-  let $track = $('.track1');
   const $boost = $('.boost');
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
   // Variables that updates during the game, based on turn/abilties used.
+  let $track = $('.track1');
   let playerOneTurn = true;
   let PlayerOneBoostRemaining = 1;
   let PlayerTwoBoostRemaining = 1;
@@ -51,6 +51,7 @@ $(() => {
       $turnText.text('Player 1\'s Turn');
     }
   }
+
 // This function locates gary on the board, the seperate parts of the if else statement run based onw hich places turn it is, once doing so it fires off the moveGary function.
   function locateGary(){
     if(playerOneTurn){
@@ -88,6 +89,7 @@ $(() => {
 // various event listeners below.
   $move.on('click', determineTurn);
 
+// this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
   $boost.on('click', () =>{
     if(playerOneTurn){
       if(PlayerOneBoostRemaining === 1){
