@@ -18,7 +18,7 @@ $(() => {
       index = $('.track1.player').index();
       console.log(index);
       if(index >= 21){
-        console.log('Player 1 wins!');
+        alert('Player 1 wins!');
         $finish1.addClass('player');
         $move.addClass('hide');
         $boost.addClass('hide');
@@ -28,7 +28,7 @@ $(() => {
       index = $('.track2.player').index();
       console.log(index);
       if(index >= 21){
-        console.log('Player 2 wins!');
+        alert('Player 2 wins!');
         $finish2.addClass('player');
         $move.addClass('hide');
         $boost.addClass('hide');
@@ -55,19 +55,19 @@ $(() => {
   function locateGary(){
     if(playerOneTurn){
       index = $('.track1.player').index();
-      if(PlayerOneBoostRemaining === 1){
+      if(PlayerOneBoostRemaining > 0){
         moveGary();
-      } else {
-        PlayerOneBoostRemaining = 2;
+      } else if(PlayerOneBoostRemaining === 0) {
         boostGary();
+        PlayerOneBoostRemaining = 2;
       }
     } else if (!playerOneTurn){
       index = $('.track2.player').index();
-      if(PlayerTwoBoostRemaining === 1){
+      if(PlayerTwoBoostRemaining > 0){
         moveGary();
-      }else {
-        PlayerTwoBoostRemaining = 2;
+      }else if(PlayerTwoBoostRemaining === 0) {
         boostGary();
+        PlayerTwoBoostRemaining = 2;
       }
     }
   }
@@ -93,11 +93,15 @@ $(() => {
       if(PlayerOneBoostRemaining === 1){
         PlayerOneBoostRemaining = 0;
         determineTurn();
+      } else if(PlayerOneBoostRemaining === 2){
+        alert('Player 1 boost already used!');
       }
     } else if (!playerOneTurn){
       if(PlayerTwoBoostRemaining === 1){
         PlayerTwoBoostRemaining = 0;
         determineTurn();
+      } else if(PlayerTwoBoostRemaining === 2){
+        alert('Player 2 boost already used!');
       }
     }
   });
