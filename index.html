@@ -5,21 +5,22 @@
   <title>Project 0</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="public/js/app.js" charset="utf-8"></script>
+  <link href="https://fonts.googleapis.com/css?family=Freckle+Face" rel="stylesheet">
   <link rel="stylesheet" href="public/css/main.css">
 </head>
 <body>
   <header>
-    <h1>Garys of Thunder</h1>
+    <h1 class="title">Garys of Thunder</h1>
   </header>
   <main>
     <div class="instructions">
       <h2>Instructions</h2>
-      <p>Welcome to Days of Gary! Race your Gary across the screen to claim victory, each turn you can move your Gary, boost your Gary, or salt your opponent. Boost will give you a guarenteed big move, and salt with prevent your opponents next turn! Be wary, your salt and boost only work once so use them wisely!</p>
+      <p class="intro">Welcome to Garys of Thunder! Race your Gary across the screen to claim victory, each turn you can move your Gary, boost your Gary, or salt your opponent. Boost will give you a guarenteed big move, and salt with prevent your opponents next turn! Be wary, your salt and boost only work once so use them wisely!</p>
       <button class="start">Start Race</button>
     </div>
     <div class="board hide">
       <div class="trackOne">
-        <div class="track1 player">
+        <div class="track1 start1 player">
         </div>
         <div class="track1">
         </div>
@@ -71,7 +72,7 @@
         </div>
       </div>
       <div class="trackTwo">
-        <div class="track2 player">
+        <div class="track2 start2 player">
         </div>
         <div class="track2">
         </div>
@@ -126,14 +127,18 @@
     <div class="feedback hide">
       <h3 class="turn">Player 1's Turn</h3>
     </div>
+    <div class="resultBox hide">
+      <div class="playerOneWin hide">Player 1 Wins!!!
+      </div>
+      <div class="playerTwoWin hide">Player 2 Wins!!!
+      </div>
+      <button class="reset hide"> Play Again?</button>
+    </div>
     <div class="controller hide">
       <button class="move">Move</button>
       <button class="boost">Boost</button>
       <button class="salt">Salt</button>
     </div>
   </main>
-  <footer>
-    <h4>Made by Jack</h4>
-  </footer>
 </body>
 </html>

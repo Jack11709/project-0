@@ -22,20 +22,25 @@ $(() => {
       index = $('.track1.player').index();
       console.log(index);
       if(index >= 21){
-        alert('Player 1 wins!');
+        $('.feedback').addClass('hide');
         $finish1.addClass('player');
-        $turnText.text('hide');
+        $finish1.addClass('winner');
         $('.controller').addClass('hide');
-
+        $('.playerOneWin').removeClass('hide');
+        $('.reset').removeClass('hide');
+        $('.resultBox').removeClass('hide');
       }
     } else if(!playerOneTurn){
       index = $('.track2.player').index();
       console.log(index);
       if(index >= 21){
-        alert('Player 2 wins!');
+        $('.feedback').addClass('hide');
         $finish2.addClass('player');
-        $turnText.addClass('hide');
+        $finish2.addClass('winner');
         $('.controller').addClass('hide');
+        $('.playerTwoWin').removeClass('hide');
+        $('.reset').removeClass('hide');
+        $('.resultBox').removeClass('hide');
       }
     }
   }
@@ -156,5 +161,23 @@ $(() => {
     $('.board').removeClass('hide');
     $('.controller').removeClass('hide');
     $('.feedback').removeClass('hide');
+  });
+
+  // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again.
+
+  $('.reset').on('click',() => {
+    $('.track1').removeClass('player winner');
+    $('.start1').addClass('player');
+    PlayerOneBoostRemaining = 1;
+    PlayerOneSaltRemaining =1;
+    $('.track2').removeClass('player winner');
+    $('.start2').addClass('player');
+    PlayerTwoBoostRemaining = 1;
+    PlayerTwoSaltRemaining = 1;
+    $('.controller').removeClass('hide');
+    $('.feedback').removeClass('hide');
+    $('.resultBox').addClass('hide');
+    $('.playerOneWin').addClass('hide');
+    $('.playerTwoWin').addClass('hide');
   });
 });
