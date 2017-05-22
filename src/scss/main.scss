@@ -1,6 +1,12 @@
 body {
-  background-color: white;
-  height: 600px;
+  height: 400px;
+  background-color: #42dff4;
+}
+.main{
+  width:960px;
+}
+.board{
+  margin: 0 auto;
 }
 .trackOne {
   width: 960px;
@@ -16,19 +22,23 @@ body {
   height: 48px;
   width: 30px;
   display: inline-block;
-  background-color: white;
+  background-color: #42dff4;
   border: 1px solid black;
 }
 .track2 {
   height: 48px;
   width: 30px;
   display: inline-block;
-  background-color: white;
+  background-color: #42dff4;
   border: 1px solid black;
 }
 .controller {
+  padding: 20px 50px;
   display: inline-block;
   border: 1px solid black;
+}
+.salt .move .boost{
+  margin: 20px;
 }
 .player{
   background-image: url('https://vignette4.wikia.nocookie.net/spongebob/images/8/81/Gary_the_Snail.svg/revision/latest/scale-to-width-down/200?cb=20100922010234');
@@ -38,4 +48,15 @@ body {
 }
 .hide{
   display: none;
+}
+.feedback{
+  height: 40px;
+  width: 400px;
+  border: 1px solid black;
+  margin: 5px;
+}
+.footer{
+  height: 300px;
+  width: 100%;
+  background-color: #cdd850;
 }

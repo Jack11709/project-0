@@ -1,7 +1,9 @@
 $(() => {
   // List of variables needed for the game
+  const $start = $('.start');
   const $move = $('.move');
   const $boost = $('.boost');
+  const $salt = $('.salt');
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
@@ -10,6 +12,8 @@ $(() => {
   let playerOneTurn = true;
   let PlayerOneBoostRemaining = 1;
   let PlayerTwoBoostRemaining = 1;
+  let PlayerOneSaltRemaining = 1;
+  let PlayerTwoSaltRemaining = 1;
   let index = null;
 
   // function that checks to see if either player is in a winning position, postion is determines if the index of the occupied space is equal to or greater than 21(the finish line), there are hidden run off boxes that also evaulate the winner if the final move would of take then player passed index 21.
@@ -20,9 +24,9 @@ $(() => {
       if(index >= 21){
         alert('Player 1 wins!');
         $finish1.addClass('player');
-        $move.addClass('hide');
-        $boost.addClass('hide');
-        $turnText.addClass('hide');
+        $turnText.text('hide');
+        $('.controller').addClass('hide');
+
       }
     } else if(!playerOneTurn){
       index = $('.track2.player').index();
@@ -30,9 +34,8 @@ $(() => {
       if(index >= 21){
         alert('Player 2 wins!');
         $finish2.addClass('player');
-        $move.addClass('hide');
-        $boost.addClass('hide');
         $turnText.addClass('hide');
+        $('.controller').addClass('hide');
       }
     }
   }
@@ -86,6 +89,23 @@ $(() => {
     $track.eq(index + 5).addClass('player');
     checkWinner();
   }
+
+// the saltGary function.
+  function saltGary() {
+    if(PlayerOneSaltRemaining === 0){
+      PlayerOneSaltRemaining = 2;
+      playerOneTurn = true;
+      index = $('.track1.player').index();
+      $turnText.text('Player 2 has been salted! Player 1 moves again!');
+      moveGary();
+    } else if(PlayerTwoSaltRemaining === 0){
+      PlayerTwoSaltRemaining = 2;
+      // playerOneTurn = false;
+      $turnText.text('Player 1 has been salted! Player 2 moves again!');
+      index = $('.track2.player').index();
+      moveGary();
+    }
+  }
 // various event listeners below.
 
 // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions.
@@ -98,15 +118,43 @@ $(() => {
         PlayerOneBoostRemaining = 0;
         determineTurn();
       } else if(PlayerOneBoostRemaining === 2){
-        alert('Player 1 boost already used!');
+        $turnText.text('Player 1 boost already used!');
       }
     } else if (!playerOneTurn){
       if(PlayerTwoBoostRemaining === 1){
         PlayerTwoBoostRemaining = 0;
         determineTurn();
       } else if(PlayerTwoBoostRemaining === 2){
-        alert('Player 2 boost already used!');
+        $turnText.text('Player 2 boost already used!');
       }
     }
+  });
+
+  // below is the event listener for the salt ability. Using this will stop your opponents next turn and give gary a normal garyMove while using it. If a player has already used their salt it informs them on the $turnText feedback.
+  $salt.on('click',() => {
+    if(playerOneTurn){
+      if(PlayerOneSaltRemaining === 1){
+        PlayerOneSaltRemaining = 0;
+        saltGary();
+      } else if(PlayerOneSaltRemaining === 2){
+        $turnText.text('Player 1 has already used Salt!');
+      }
+    } else if(!playerOneTurn){
+      if(PlayerTwoSaltRemaining === 1){
+        PlayerTwoSaltRemaining = 0;
+        saltGary();
+      } else if(PlayerTwoSaltRemaining === 2){
+        $turnText.text('Player 2 has already used Salt!');
+      }
+    }
+  });
+
+  // Click event to start the game, removes the instruction page and then shows the racetrack, feedback box and controller.
+
+  $start.on('click', () => {
+    $('.instructions').addClass('hide');
+    $('.board').removeClass('hide');
+    $('.controller').removeClass('hide');
+    $('.feedback').removeClass('hide');
   });
 });
