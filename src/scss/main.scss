@@ -1,3 +1,7 @@
+*{
+  box-sizing: content-box;
+}
+
 body {
   background-image: url("http://www.mrwallpaper.com/wallpapers/Shells-Seabed.jpg");
   background-size: cover;
@@ -89,7 +93,12 @@ h2{
   height: 40px;
   width: 400px;
   border: 1px solid black;
-  margin: 5px;
+  margin: 5px 5px 20px 5px;
+  font-family: 'Freckle Face', cursive;
+  color: yellow;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 25px;
 }
 .resultBox{
   height: 60px;

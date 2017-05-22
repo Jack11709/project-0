@@ -7,6 +7,12 @@ $(() => {
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
+  const $audioTheme = $('.theme')[0];
+  $audioTheme.src = 'sounds/closing_theme.mp3';
+  const $boostSound = $('.boostSound')[0];
+  $boostSound.src = 'sounds/boost_sound.mp3';
+  const $saltSound = $('.saltSound')[0];
+  $saltSound.src = 'sounds/salt_sound.mp3';
   // Variables that update during the game, based on turn/abilties used.
   let $track = $('.track1');
   let playerOneTurn = true;
@@ -117,9 +123,10 @@ $(() => {
   $move.on('click', determineTurn);
 
 // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
-  $boost.on('click', () =>{
+  $boost.on('click', () => {
     if(playerOneTurn){
       if(PlayerOneBoostRemaining === 1){
+        $boostSound.play();
         PlayerOneBoostRemaining = 0;
         determineTurn();
       } else if(PlayerOneBoostRemaining === 2){
@@ -127,6 +134,7 @@ $(() => {
       }
     } else if (!playerOneTurn){
       if(PlayerTwoBoostRemaining === 1){
+        $boostSound.play();
         PlayerTwoBoostRemaining = 0;
         determineTurn();
       } else if(PlayerTwoBoostRemaining === 2){
@@ -139,6 +147,7 @@ $(() => {
   $salt.on('click',() => {
     if(playerOneTurn){
       if(PlayerOneSaltRemaining === 1){
+        $saltSound.play();
         PlayerOneSaltRemaining = 0;
         saltGary();
       } else if(PlayerOneSaltRemaining === 2){
@@ -146,6 +155,7 @@ $(() => {
       }
     } else if(!playerOneTurn){
       if(PlayerTwoSaltRemaining === 1){
+        $saltSound.play();
         PlayerTwoSaltRemaining = 0;
         saltGary();
       } else if(PlayerTwoSaltRemaining === 2){
@@ -161,6 +171,7 @@ $(() => {
     $('.board').removeClass('hide');
     $('.controller').removeClass('hide');
     $('.feedback').removeClass('hide');
+    $audioTheme.play();
   });
 
   // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again.
