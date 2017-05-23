@@ -30,12 +30,14 @@ $(() => {
   let PlayerOneSaltRemaining = 1;
   let PlayerTwoSaltRemaining = 1;
   let index = null;
+  let playerOneTracker = null;
 
   // function that checks to see if either player is in a winning position, postion is determines if the index of the occupied space is equal to or greater than 21(the finish line), there are hidden run off boxes that also evaulate the winner if the final move would of take then player passed index 21.
   function checkWinner(){
     if(playerOneTurn){
       index = $('.track1.player').index();
-      console.log(index);
+      playerOneTracker = index;
+      console.log(playerOneTracker);
       if(index >= 21){
         $winSound.play();
         $('.feedback').addClass('hide');
@@ -48,7 +50,6 @@ $(() => {
       }
     } else if(!playerOneTurn){
       index = $('.track2.player').index();
-      console.log(index);
       if(index >= 21){
         $winSound.play();
         $('.feedback').addClass('hide');
@@ -188,6 +189,7 @@ $(() => {
     $('.board').removeClass('hide');
     $('.controller').removeClass('hide');
     $('.feedback').removeClass('hide');
+    // $audioTheme.src = 'sounds/closing_theme.mp3';
     $audioTheme.play();
   });
 
@@ -207,5 +209,8 @@ $(() => {
     $('.resultBox').addClass('hide');
     $('.playerOneWin').addClass('hide');
     $('.playerTwoWin').addClass('hide');
+    $audioTheme.src = '';
+    $audioTheme.src = 'sounds/closing_theme.mp3';
+    $audioTheme.play();
   });
 });
