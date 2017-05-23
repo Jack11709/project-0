@@ -7,12 +7,17 @@ $(() => {
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
+  // Audio variables.
   const $audioTheme = $('.theme')[0];
   $audioTheme.src = 'sounds/closing_theme.mp3';
   const $boostSound = $('.boostSound')[0];
   $boostSound.src = 'sounds/boost_sound.mp3';
   const $saltSound = $('.saltSound')[0];
   $saltSound.src = 'sounds/salt_sound.mp3';
+  const $moveSound = $('.moveSound')[0];
+  $moveSound.src = 'sounds/move_sound.mp3';
+  const $errorSound = $('.errorSound')[0];
+  $errorSound.src = 'sounds/error_sound.mp3';
   // Variables that update during the game, based on turn/abilties used.
   let $track = $('.track1');
   let playerOneTurn = true;
@@ -120,7 +125,10 @@ $(() => {
 // various event listeners below.
 
 // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions.
-  $move.on('click', determineTurn);
+  $move.on('click', () => {
+    $moveSound.play();
+    determineTurn();
+  });
 
 // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
   $boost.on('click', () => {
@@ -130,6 +138,7 @@ $(() => {
         PlayerOneBoostRemaining = 0;
         determineTurn();
       } else if(PlayerOneBoostRemaining === 2){
+        $errorSound.play();
         $turnText.text('Player 1 boost already used!');
       }
     } else if (!playerOneTurn){
@@ -138,6 +147,7 @@ $(() => {
         PlayerTwoBoostRemaining = 0;
         determineTurn();
       } else if(PlayerTwoBoostRemaining === 2){
+        $errorSound.play();
         $turnText.text('Player 2 boost already used!');
       }
     }
@@ -151,6 +161,7 @@ $(() => {
         PlayerOneSaltRemaining = 0;
         saltGary();
       } else if(PlayerOneSaltRemaining === 2){
+        $errorSound.play();
         $turnText.text('Player 1 has already used Salt!');
       }
     } else if(!playerOneTurn){
@@ -159,6 +170,7 @@ $(() => {
         PlayerTwoSaltRemaining = 0;
         saltGary();
       } else if(PlayerTwoSaltRemaining === 2){
+        $errorSound.play();
         $turnText.text('Player 2 has already used Salt!');
       }
     }
