@@ -16,6 +16,8 @@ $(() => {
   $saltSound.src = 'sounds/salt_sound.mp3';
   const $moveSound = $('.moveSound')[0];
   $moveSound.src = 'sounds/move_sound.mp3';
+  const $moveSoundTwo = $('.moveSound2')[0];
+  $moveSoundTwo.src = 'sounds/move_sound2.mp3';
   const $errorSound = $('.errorSound')[0];
   $errorSound.src = 'sounds/error_sound.mp3';
   const $winSound = $('.winSound')[0];
@@ -80,6 +82,7 @@ $(() => {
     if(playerOneTurn){
       index = $('.track1.player').index();
       if(PlayerOneBoostRemaining > 0){
+        $moveSound.play();
         moveGary();
       } else if(PlayerOneBoostRemaining === 0) {
         boostGary();
@@ -88,6 +91,7 @@ $(() => {
     } else if (!playerOneTurn){
       index = $('.track2.player').index();
       if(PlayerTwoBoostRemaining > 0){
+        $moveSoundTwo.play();
         moveGary();
       }else if(PlayerTwoBoostRemaining === 0) {
         boostGary();
@@ -129,10 +133,7 @@ $(() => {
 // various event listeners below.
 
 // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions.
-  $move.on('click', () => {
-    $moveSound.play();
-    determineTurn();
-  });
+  $move.on('click', determineTurn);
 
 // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
   $boost.on('click', () => {
