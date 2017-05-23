@@ -18,6 +18,8 @@ $(() => {
   $moveSound.src = 'sounds/move_sound.mp3';
   const $errorSound = $('.errorSound')[0];
   $errorSound.src = 'sounds/error_sound.mp3';
+  const $winSound = $('.winSound')[0];
+  $winSound.src = 'sounds/winning_sound.mp3';
   // Variables that update during the game, based on turn/abilties used.
   let $track = $('.track1');
   let playerOneTurn = true;
@@ -33,6 +35,7 @@ $(() => {
       index = $('.track1.player').index();
       console.log(index);
       if(index >= 21){
+        $winSound.play();
         $('.feedback').addClass('hide');
         $finish1.addClass('player');
         $finish1.addClass('winner');
@@ -45,6 +48,7 @@ $(() => {
       index = $('.track2.player').index();
       console.log(index);
       if(index >= 21){
+        $winSound.play();
         $('.feedback').addClass('hide');
         $finish2.addClass('player');
         $finish2.addClass('winner');

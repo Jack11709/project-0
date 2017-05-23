@@ -12,7 +12,7 @@ body {
   text-align: center;
   font-family: 'Freckle Face', cursive;
   text-transform: uppercase;
-  color: yellow;
+  color: #ffff66;
   font-size: 70px;
 }
 h2{
@@ -21,7 +21,7 @@ h2{
 }
 .instructions{
   font-family: 'Freckle Face', cursive;
-  color: yellow;
+  color: #ffff66;
   font-size: 25px;
   text-align: center;
 }
@@ -32,11 +32,12 @@ h2{
 .start{
   margin-top: 10px;
   border-radius: 10px;
-  background-color: yellow;
+  background-color: #ffff66;
   color: dodgerblue;
-  height: 50px;
+  height: 70px;
   width: 100px;
-  font-size: 15px;
+  font-size: 25px;
+  font-family: 'Freckle Face', cursive;
 }
 // end of intro page styles
 
@@ -44,67 +45,104 @@ h2{
 .main{
   width:960px;
 }
+
+// styling for the track is below
 .board{
   margin: 0 auto;
+  position: relative;
+  left: 12%;
 }
-.trackOne {
+.trackOne, .trackTwo {
   width: 960px;
   height: 55px;
   margin: 20px;
 }
-.trackTwo {
-  width: 960px;
-  height: 80px;
-  margin: 20px;
-}
-.track1 {
+.track1, .track2 {
   height: 68px;
   width: 35px;
   display: inline-block;
-  border: 1px solid black;
+  border: 1px solid grey;
 }
-.track2 {
-  height: 68px;
-  width: 35px;
-  display: inline-block;
-  border: 1px solid black;
+.finish1, .finish2{
+  border-color: red;
 }
-.button{
+.start1, .start2 {
+  border-color: green;
+}
+
+// Bit of styling for the button cursor.
+button{
   cursor: pointer;
 }
+// styling for the controller
 .controller {
   padding: 20px 50px;
-  display: inline-block;
-  border: 1px solid black;
+  display: block;
+  border-radius: 50px;
+  background-color: #ffff66;
+  margin: 30px auto;
+  border: 4px solid dodgerblue;
+  width: 356px;
 }
-.salt .move .boost{
-  margin: 20px;
+.move, .boost, .salt {
+  margin:0 20px 0 20px;
+  font-family: 'Freckle Face', cursive;
+  text-transform: uppercase;
+  height: 30px;
+  width: 60px;
+  border-radius: 20px;
+  background-color: dodgerblue;
+  color: #ffff66;
+  font-size: 20px;
 }
+
+// player class, this inputs the picture of Gary at this correct position.
 .player{
   background-image: url('https://vignette4.wikia.nocookie.net/spongebob/images/8/81/Gary_the_Snail.svg/revision/latest/scale-to-width-down/200?cb=20100922010234');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 }
+// hide class is used alot as the game moves between intro page to the game board.
 .hide{
   display: none;
 }
+
+// styling for the player feedback and result boxes, result box replaces the feedback box when a result has been made,
 .feedback{
-  height: 40px;
+  height: 60px;
   width: 400px;
-  border: 1px solid black;
-  margin: 5px 5px 20px 5px;
+  margin: 0 auto;
   font-family: 'Freckle Face', cursive;
-  color: yellow;
+  color: #ffff66;
   text-transform: uppercase;
   text-align: center;
   font-size: 25px;
 }
+// syles for the resultBox, has the hidden class untill the game is over
+h3{
+  padding-bottom: 30px;
+}
 .resultBox{
   height: 60px;
   width: 400px;
-  border: 1px solid black;
+  margin: 60px auto;
+  font-family: 'Freckle Face', cursive;
+  text-transform: uppercase;
+  font-size: 40px;
+  text-align: center;
+  color: #ffff66;
 }
+.reset{
+  background-color: #ffff66;
+  font-family: 'Freckle Face', cursive;
+  font-size: 20px;
+  color: dodgerblue;
+  border-radius: 20px;
+  width: 150px;
+}
+
+// Shake animation for the winner.
 .winner{
 animation: shake 0.5s infinite;
 }
