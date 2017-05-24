@@ -12,6 +12,8 @@ $(() => {
   const $controller = $('.controller');
   const $reset = $('.reset');
   const $resultBox = $('.resultBox');
+  const $instructions = $('.instructions');
+  const $board = $('.board');
   // Audio variables.
   const $audioTheme = $('.theme')[0];
   $audioTheme.src = 'sounds/closing_theme.mp3';
@@ -160,7 +162,7 @@ $(() => {
         moveGary();
       } else if(PlayerTwoSaltRemaining === 0){
         PlayerTwoSaltRemaining = 2;
-        $turnText.text('Player 1 has been salted! Player 2 moves again!');
+        $turnText.text('Player 1 has been salted!   Player 2 moves again!');
         index = $('.track2.player').index();
         moveGary();
       }
@@ -169,7 +171,7 @@ $(() => {
         playerOneTurn = true;
         $track = $('.track1');
         index = $('.track1.player').index();
-        $turnText.text('Mecha Gary has been salted! Player 1 moves again!');
+        $turnText.text('Mecha Gary has been salted!   Player 1 moves again!');
         $track.eq(index).removeClass('player');
         $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
         PlayerOneSaltRemaining = 2;
@@ -177,7 +179,7 @@ $(() => {
       }
     }
   }
-  // function below is for the one player mode, it tracks player 1s postion and saves it in player 1 tracker, then makes a desicion based on that postion, the bigger the number in player tracker the more likeliness of it using one of the ability moves. The first three functions define the actual move to make it more readable in the actual ai desicion function.
+  // function below is for the one player mode, it tracks player 1s postion via the index and saves it in player 1 tracker, then makes a desicion based on that postion, the bigger the number in player tracker the more likeliness of it using one of the ability moves. The first three functions define the actual move to make it more readable in the actual ai desicion function. each move changes to player 1 turn false before calling checkWinner so can use the same function in both 1 p and 2 p version.
   function aiSalt(){
     $turnText.text('Mecha Gary has salted you, he moves again!');
     $saltSound.play();
@@ -185,36 +187,44 @@ $(() => {
     $track.eq(index).removeClass('player');
     $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
     setTimeout(function(){
-      aiMove();
-    }, 750);
+      aiReg();
+    }, 1000);
     playerOneTurn = false;
     checkWinner();
     playerOneTurn = true;
+    playerOneTrack();
   }
 
   function aiBoost(){
     $boostSound.play();
     $track.eq(index).removeClass('player');
     $track.eq(index + 5).addClass('player');
-    $turnText.text('Mecha Gary has boosted!');
+    $turnText.text('Mecha Gary has boosted!   Player 1\'s turn ');
     playerOneTurn = false;
     PlayerTwoBoostRemaining = 2;
     checkWinner();
     playerOneTurn = true;
+    playerOneTrack();
   }
 
   function aiReg(){
     $moveSoundTwo.play();
     $track.eq(index).removeClass('player');
     $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-    $turnText.text('Mecha Gary has made his move!');
+    $turnText.text('Mecha Gary has made his move!   Player 1\'s turn');
     playerOneTurn = false;
     checkWinner();
     playerOneTurn = true;
+    playerOneTrack();
+  }
+
+  function playerOneTrack(){
+    index = $('.track1.player').index();
+    playerOneTracker = index;
   }
 
   function aiMove(){
-    playerOneTracker = index;
+    playerOneTrack();
     $track = $('.track2');
     index = $('.track2.player').index();
     setTimeout(function(){
@@ -233,7 +243,7 @@ $(() => {
         } else if(aiMoveDecider === 5 && PlayerTwoSaltRemaining === 2){
           aiReg();
         }
-      }else if(playerOneTracker > 14){
+      }else if(playerOneTracker >= 15){
         aiMoveDecider = Math.floor(Math.random() * 5) + 1;
         if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 1){
           aiBoost();
@@ -247,7 +257,7 @@ $(() => {
           aiReg();
         }
       }
-    }, 1500);
+    }, 1000);
   }
   // various event listeners below.
 
@@ -255,12 +265,10 @@ $(() => {
   function moveEvent(){
     if(!isOnePlayer){
       $move.on('click', () => {
-        console.log('2p move run');
         determineTurn();
       });
     } else if(isOnePlayer) {
       $move.on('click',() =>{
-        console.log('1p move run');
         $track = $('.track1');
         index = $('.track1.player').index();
         moveGary();
@@ -346,32 +354,29 @@ $(() => {
     }
   }
 
-  // Click event to start the game, removes the instruction page and then shows the racetrack, feedback box and controller.
+  // Click event to start the game, removes the instruction page and then shows the racetrack, feedback box and controller. Have moved events that happen in both to the alwasy on start function.
 
   $start.on('click', () => {
-    $('.instructions').addClass('hide');
-    $('.board').removeClass('hide');
-    $('.controller').removeClass('hide');
-    $('.feedback').removeClass('hide');
-    moveEvent();
-    boostEvent();
-    saltEvent();
-    $audioTheme.play();
+    alwaysOnStart();
   });
 
   // click event to start the 1p option.
   $start1Player.on('click',() => {
     isOnePlayer = true;
-    $('.instructions').addClass('hide');
-    $('.board').removeClass('hide');
-    $('.controller').removeClass('hide');
-    $('.feedback').removeClass('hide');
+    alwaysOnStart();
+    $turnText.text('Make your first move!');
+  });
+
+  function alwaysOnStart(){
+    $instructions.addClass('hide');
+    $board.removeClass('hide');
+    $controller.removeClass('hide');
+    $feedback.removeClass('hide');
     moveEvent();
     boostEvent();
     saltEvent();
-    $turnText.text('Make your first move!');
     $audioTheme.play();
-  });
+  }
 
   // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again. funnction below that is some refactoring for commands that happen regardless of 1p or 2p mode.
 
