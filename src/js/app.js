@@ -8,6 +8,10 @@ $(() => {
   const $turnText = $('.turn');
   const $finish1 = $('.finish1');
   const $finish2 = $('.finish2');
+  const $feedback = $('.feedback');
+  const $controller = $('.controller');
+  const $reset = $('.reset');
+  const $resultBox = $('.resultBox');
   // Audio variables.
   const $audioTheme = $('.theme')[0];
   $audioTheme.src = 'sounds/closing_theme.mp3';
@@ -40,26 +44,18 @@ $(() => {
     if(playerOneTurn){
       index = $('.track1.player').index();
       if(index >= 21){
-        $winSound.play();
-        $('.feedback').addClass('hide');
+        alwaysOnWin();
         $finish1.addClass('player');
         $finish1.addClass('winner');
-        $('.controller').addClass('hide');
         $('.playerOneWin').removeClass('hide');
-        $('.reset').removeClass('hide');
-        $('.resultBox').removeClass('hide');
         $('.aiWin').addClass('hide');
       }
     } else if(!playerOneTurn){
       index = $('.track2.player').index();
       if(index >= 21){
-        $winSound.play();
-        $('.feedback').addClass('hide');
+        alwaysOnWin();
         $finish2.addClass('player');
         $finish2.addClass('winner');
-        $('.controller').addClass('hide');
-        $('.reset').removeClass('hide');
-        $('.resultBox').removeClass('hide');
         if(!isOnePlayer){
           $('.playerTwoWin').removeClass('hide');
         } else if(isOnePlayer){
@@ -67,6 +63,14 @@ $(() => {
         }
       }
     }
+  }
+  // refactored as these events always happen regardless of who wins.
+  function alwaysOnWin(){
+    $winSound.play();
+    $feedback.addClass('hide');
+    $controller.addClass('hide');
+    $reset.removeClass('hide');
+    $resultBox.removeClass('hide');
   }
 
   // this function determines whos turn it is and updates the on screen pormpt accordingly, it is fired directly after the click event on move, and it fired if a boost happens after updating the boost boolean, it works on the one variable which gets updated of playerOneTurn from true to false.
@@ -126,7 +130,7 @@ $(() => {
     }
   }
 
-  // This function fires off if the boost button is clicked on, the click event updates the boost count and this function is called when the locateGary is running. It guarentees the user a move of 5 spaces then runs the check winner function to see if a win condition has been met.
+  // This function fires off if the boost button is clicked on, the click event updates the boost count and this function is called when the locateGary is running. It guarentees the user a move of 5 spaces then runs the check winner function to see if a win condition has been met. this if for the 2 player version.
   function boostGary() {
     if(!isOnePlayer){
       $track.eq(index).removeClass('player');
@@ -145,7 +149,7 @@ $(() => {
   }
 
 
-  // the saltGary function.
+  // the saltGary function. for the 2 player version.
   function saltGary() {
     if(!isOnePlayer){
       if(PlayerOneSaltRemaining === 0){
@@ -247,7 +251,7 @@ $(() => {
   }
   // various event listeners below.
 
-  // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions.
+  // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions. Now has a seperate part for the 1 version which skips the turn checker.
   function moveEvent(){
     if(!isOnePlayer){
       $move.on('click', () => {
@@ -291,7 +295,6 @@ $(() => {
     } else if(isOnePlayer){
       $boost.on('click',() =>{
         if(PlayerOneBoostRemaining === 1){
-          console.log('1p boost run');
           $track = $('.track1');
           index = $('.track1.player').index();
           PlayerOneBoostRemaining = 2;
@@ -370,46 +373,36 @@ $(() => {
     $audioTheme.play();
   });
 
-  // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again.
+  // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again. funnction below that is some refactoring for commands that happen regardless of 1p or 2p mode.
+
   if(!isOnePlayer){
-    $('.reset').on('click',() => {
-      $('.track1').removeClass('player winner');
-      $('.start1').addClass('player');
-      PlayerOneBoostRemaining = 1;
-      PlayerOneSaltRemaining =1;
-      $('.track2').removeClass('player winner');
-      $('.start2').addClass('player');
-      PlayerTwoBoostRemaining = 1;
-      PlayerTwoSaltRemaining = 1;
-      $('.controller').removeClass('hide');
-      $('.feedback').removeClass('hide');
-      $('.resultBox').addClass('hide');
-      $('.playerOneWin').addClass('hide');
+    $reset.on('click',() => {
+      alwaysOnReset();
       $('.playerTwoWin').addClass('hide');
-      $audioTheme.src = '';
-      $audioTheme.src = 'sounds/closing_theme.mp3';
-      $audioTheme.play();
     });
   } else if(isOnePlayer){
-    $('.reset').on('click',() => {
-      $('.track1').removeClass('player winner');
-      $('.start1').addClass('player');
-      PlayerOneBoostRemaining = 1;
-      PlayerOneSaltRemaining =1;
-      $('.track2').removeClass('player winner');
-      $('.start2').addClass('player');
-      PlayerTwoBoostRemaining = 1;
-      PlayerTwoSaltRemaining = 1;
-      playerOneTracker = null;
-      $('.controller').removeClass('hide');
-      $('.feedback').removeClass('hide');
-      $('.resultBox').addClass('hide');
-      $('.playerOneWin').addClass('hide');
+    $reset.on('click',() => {
+      alwaysOnReset();
       $('.aiWin').addClass('hide');
       $turnText.text('Player 1\'s time to shine!');
-      $audioTheme.src = '';
-      $audioTheme.src = 'sounds/closing_theme.mp3';
-      $audioTheme.play();
     });
+  }
+  function alwaysOnReset(){
+    $('.track1').removeClass('player winner');
+    $('.start1').addClass('player');
+    PlayerOneBoostRemaining = 1;
+    PlayerOneSaltRemaining =1;
+    $('.track2').removeClass('player winner');
+    $('.start2').addClass('player');
+    PlayerTwoBoostRemaining = 1;
+    PlayerTwoSaltRemaining = 1;
+    playerOneTracker = null;
+    $('.controller').removeClass('hide');
+    $('.feedback').removeClass('hide');
+    $('.resultBox').addClass('hide');
+    $('.playerOneWin').addClass('hide');
+    $audioTheme.src = '';
+    $audioTheme.src = 'sounds/closing_theme.mp3';
+    $audioTheme.play();
   }
 });
