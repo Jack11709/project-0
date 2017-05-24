@@ -48,6 +48,7 @@ $(() => {
         $('.playerOneWin').removeClass('hide');
         $('.reset').removeClass('hide');
         $('.resultBox').removeClass('hide');
+        $('.aiWin').addClass('hide');
       }
     } else if(!playerOneTurn){
       index = $('.track2.player').index();
@@ -136,7 +137,10 @@ $(() => {
       $track.eq(index).removeClass('player');
       $track.eq(index + 5).addClass('player');
       checkWinner();
-      aiMove();
+      index = $('.track1.player').index();
+      if(index < 21){
+        aiMove();
+      }
     }
   }
 
@@ -188,12 +192,12 @@ $(() => {
         if(aiMoveDecider <= 2){
           $moveSoundTwo.play();
           $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
+          $track.eq(index + (Math.floor(Math.random() * 3)) + 1).addClass('player');
           $turnText.text('Mecha Gary has made his move!');
           playerOneTurn = false;
           checkWinner();
           playerOneTurn = true;
-        }else if(aiMoveDecider <=4 && PlayerTwoBoostRemaining === 1){
+        }else if(aiMoveDecider > 2 && aiMoveDecider <=4 && PlayerTwoBoostRemaining === 1){
           $boostSound.play();
           $track.eq(index).removeClass('player');
           $track.eq(index + 5).addClass('player');
@@ -202,7 +206,7 @@ $(() => {
           PlayerTwoBoostRemaining = 2;
           checkWinner();
           playerOneTurn = true;
-        } else if(aiMoveDecider <=4 && PlayerOneBoostRemaining === 2){
+        } else if(aiMoveDecider > 2 && aiMoveDecider <=4 && PlayerOneBoostRemaining === 2){
           $moveSoundTwo.play();
           $track.eq(index).removeClass('player');
           $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
@@ -241,6 +245,7 @@ $(() => {
           playerOneTurn = false;
           PlayerTwoBoostRemaining = 2;
           checkWinner();
+          playerOneTurn = true;
         } else if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 2 && PlayerTwoSaltRemaining === 1){
           $turnText.text('Mecha Gary has salted you, he moves again!');
           $saltSound.play();
@@ -253,7 +258,7 @@ $(() => {
           playerOneTurn = false;
           checkWinner();
           playerOneTurn = true;
-        } else if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 2){
+        } else if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 2 && PlayerOneSaltRemaining === 2){
           $moveSoundTwo.play();
           $track.eq(index).removeClass('player');
           $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
@@ -261,7 +266,7 @@ $(() => {
           playerOneTurn = false;
           checkWinner();
           playerOneTurn = true;
-        } else if(aiMoveDecider <=5 && PlayerOneSaltRemaining === 1){
+        } else if(aiMoveDecider > 3 && PlayerOneSaltRemaining === 1){
           $turnText.text('Mecha Gary has salted you, he moves again!');
           $saltSound.play();
           PlayerTwoSaltRemaining = 2;
@@ -273,7 +278,7 @@ $(() => {
           playerOneTurn = false;
           checkWinner();
           playerOneTurn = true;
-        } else if(aiMoveDecider <=5 && PlayerOneSaltRemaining === 2){
+        } else if(aiMoveDecider > 3 && PlayerOneSaltRemaining === 2){
           $moveSoundTwo.play();
           $track.eq(index).removeClass('player');
           $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
@@ -440,6 +445,7 @@ $(() => {
       $('.start2').addClass('player');
       PlayerTwoBoostRemaining = 1;
       PlayerTwoSaltRemaining = 1;
+      playerOneTracker = null;
       $('.controller').removeClass('hide');
       $('.feedback').removeClass('hide');
       $('.resultBox').addClass('hide');
