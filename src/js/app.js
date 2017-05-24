@@ -173,119 +173,74 @@ $(() => {
       }
     }
   }
-  // function below is for the one player mode, it tracks player 1s postion and saves it in player 1 tracker, then makes a desicion based on that postion, the bigger the number in player tracker the more likeliness of it using one of the ability moves.
+  // function below is for the one player mode, it tracks player 1s postion and saves it in player 1 tracker, then makes a desicion based on that postion, the bigger the number in player tracker the more likeliness of it using one of the ability moves. The first three functions define the actual move to make it more readable in the actual ai desicion function.
+  function aiSalt(){
+    $turnText.text('Mecha Gary has salted you, he moves again!');
+    $saltSound.play();
+    PlayerTwoSaltRemaining = 2;
+    $track.eq(index).removeClass('player');
+    $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
+    setTimeout(function(){
+      aiMove();
+    }, 750);
+    playerOneTurn = false;
+    checkWinner();
+    playerOneTurn = true;
+  }
+
+  function aiBoost(){
+    $boostSound.play();
+    $track.eq(index).removeClass('player');
+    $track.eq(index + 5).addClass('player');
+    $turnText.text('Mecha Gary has boosted!');
+    playerOneTurn = false;
+    PlayerTwoBoostRemaining = 2;
+    checkWinner();
+    playerOneTurn = true;
+  }
+
+  function aiReg(){
+    $moveSoundTwo.play();
+    $track.eq(index).removeClass('player');
+    $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
+    $turnText.text('Mecha Gary has made his move!');
+    playerOneTurn = false;
+    checkWinner();
+    playerOneTurn = true;
+  }
+
   function aiMove(){
     playerOneTracker = index;
     $track = $('.track2');
     index = $('.track2.player').index();
     setTimeout(function(){
       if(playerOneTracker <= 4){
-        $moveSoundTwo.play();
-        $track.eq(index).removeClass('player');
-        $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-        $turnText.text('Mecha Gary has made his move!');
-        playerOneTurn = false;
-        checkWinner();
-        playerOneTurn = true;
+        aiReg();
       }else if(playerOneTracker > 4 && playerOneTracker < 15){
-        aiMoveDecider = Math.ceil(Math.random() * 5);
+        aiMoveDecider = Math.floor(Math.random() * 5) + 1;
         if(aiMoveDecider <= 2){
-          $moveSoundTwo.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3)) + 1).addClass('player');
-          $turnText.text('Mecha Gary has made his move!');
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiReg();
         }else if(aiMoveDecider > 2 && aiMoveDecider <=4 && PlayerTwoBoostRemaining === 1){
-          $boostSound.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + 5).addClass('player');
-          $turnText.text('Mecha Gary has boosted!');
-          playerOneTurn = false;
-          PlayerTwoBoostRemaining = 2;
-          checkWinner();
-          playerOneTurn = true;
+          aiBoost();
         } else if(aiMoveDecider > 2 && aiMoveDecider <=4 && PlayerOneBoostRemaining === 2){
-          $moveSoundTwo.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          $turnText.text('Mecha Gary has made his move!');
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiReg();
         } else if(aiMoveDecider === 5 && PlayerTwoSaltRemaining === 1){
-          $turnText.text('Mecha Gary has salted you, he moves again!');
-          $saltSound.play();
-          PlayerTwoSaltRemaining = 2;
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          setTimeout(function(){
-            aiMove();
-          }, 1000);
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiSalt();
         } else if(aiMoveDecider === 5 && PlayerTwoSaltRemaining === 2){
-          $moveSoundTwo.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          $turnText.text('Mecha Gary has made his move!');
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiReg();
         }
-      }else if(playerOneTracker >= 15){
-        aiMoveDecider = Math.ceil(Math.random() * 5);
+      }else if(playerOneTracker > 14){
+        aiMoveDecider = Math.floor(Math.random() * 5) + 1;
         if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 1){
-          $boostSound.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + 5).addClass('player');
-          $turnText.text('Mecha Gary has boosted!');
-          playerOneTurn = false;
-          PlayerTwoBoostRemaining = 2;
-          checkWinner();
-          playerOneTurn = true;
+          aiBoost();
         } else if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 2 && PlayerTwoSaltRemaining === 1){
-          $turnText.text('Mecha Gary has salted you, he moves again!');
-          $saltSound.play();
-          PlayerTwoSaltRemaining = 2;
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          setTimeout(function(){
-            aiMove();
-          }, 750);
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiSalt();
         } else if(aiMoveDecider <=3 && PlayerTwoBoostRemaining === 2 && PlayerOneSaltRemaining === 2){
-          $moveSoundTwo.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          $turnText.text('Mecha Gary has made his move!');
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiReg();
         } else if(aiMoveDecider > 3 && PlayerOneSaltRemaining === 1){
-          $turnText.text('Mecha Gary has salted you, he moves again!');
-          $saltSound.play();
-          PlayerTwoSaltRemaining = 2;
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          setTimeout(function(){
-            aiMove();
-          }, 750);
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
-        } else if(aiMoveDecider > 3 && PlayerOneSaltRemaining === 2){
-          $moveSoundTwo.play();
-          $track.eq(index).removeClass('player');
-          $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
-          $turnText.text('Mecha Gary has made his move!');
-          playerOneTurn = false;
-          checkWinner();
-          playerOneTurn = true;
+          aiSalt();
+        } else {
+          aiReg();
         }
       }
     }, 1500);
