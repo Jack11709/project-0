@@ -20,11 +20,29 @@
     <audio class="moveSound2"></audio>
     <audio class="errorSound"></audio>
     <audio class="winSound"></audio>
-    <div class="instructions">
-      <h2>Instructions</h2>
-      <p class="intro">Welcome to Garys of Thunder! Race your Gary across the screen to claim victory, each turn you can move your Gary, boost your Gary, or salt your opponent. Boost will give you a guarenteed big move, and salt with prevent your opponents next turn! Be wary, your salt and boost only work once so use them wisely!</p>
-      <button class="startbtn1">Start 1 Player</button>
-      <button class="startbtn2">Start 2 Player</button>
+    <section>
+      <div class="instructions">
+        <h2>Instructions</h2>
+        <p class="intro">Welcome to Garys of Thunder! Race your Gary across the screen to claim victory, each turn you can move your Gary, boost your Gary, or salt your opponent. Boost will give you a guarenteed big move, and salt with prevent your opponents next turn! Be wary, your salt and boost only work once so use them wisely! Play 2 player mode with a friend or take on Mecha Gary in 1 Player!</p>
+        <button class="startbtn1">Start 1 Player</button>
+        <button class="startbtn2">Start 2 Player</button>
+      </div>
+    </section>
+    <div class="feedback hide">
+      <h3 class="turn">Player 1's Turn</h3>
+    </div>
+    <div class="resultBox hide">
+      <div class="playerOneWin hide">Player 1 Wins!!!
+      </div>
+      <div class="playerTwoWin hide">Player 2 Wins!!!
+      </div>
+      <div class="aiWin hide">Mecha Gary Wins!!!</div>
+      <button class="reset hide"> Play Again?</button>
+    </div>
+    <div class="controller hide">
+      <button class="move">Move</button>
+      <button class="boost">Boost</button>
+      <button class="salt">Salt</button>
     </div>
     <div class="board hide">
       <div class="trackOne">
@@ -82,7 +100,7 @@
         </div>
       </div>
       <div class="trackTwo">
-        <div class="track2 start2 player">
+        <div class="track2 start2 player" id="change">
         </div>
         <div class="track2">
         </div>
@@ -135,22 +153,6 @@
         <div class="track2 hide">
         </div>
       </div>
-    </div>
-    <div class="feedback hide">
-      <h3 class="turn">Player 1's Turn</h3>
-    </div>
-    <div class="resultBox hide">
-      <div class="playerOneWin hide">Player 1 Wins!!!
-      </div>
-      <div class="playerTwoWin hide">Player 2 Wins!!!
-      </div>
-      <div class="aiWin hide">Mecha Gary Wins!!!</div>
-      <button class="reset hide"> Play Again?</button>
-    </div>
-    <div class="controller hide">
-      <button class="move">Move</button>
-      <button class="boost">Boost</button>
-      <button class="salt">Salt</button>
     </div>
   </main>
 </body>

@@ -192,7 +192,6 @@ $(() => {
     playerOneTurn = false;
     checkWinner();
     playerOneTurn = true;
-    playerOneTrack();
   }
 
   function aiBoost(){
@@ -204,7 +203,6 @@ $(() => {
     PlayerTwoBoostRemaining = 2;
     checkWinner();
     playerOneTurn = true;
-    playerOneTrack();
   }
 
   function aiReg(){
@@ -215,7 +213,6 @@ $(() => {
     playerOneTurn = false;
     checkWinner();
     playerOneTurn = true;
-    playerOneTrack();
   }
 
   function playerOneTrack(){
@@ -365,6 +362,7 @@ $(() => {
     isOnePlayer = true;
     alwaysOnStart();
     $turnText.text('Make your first move!');
+
   });
 
   function alwaysOnStart(){
