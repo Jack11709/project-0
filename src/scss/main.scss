@@ -57,7 +57,7 @@ h2{
 
 // styling for the track is below
 .board{
-  margin: 100px auto;
+  margin: 160px auto;
   position: relative;
   left: 14%;
 }
@@ -83,14 +83,14 @@ h2{
   border-style: solid;
   border-top: none;
   border-bottom: none;
-  border-right: none;
+  border-left: none;
 }
 .start1, .start2 {
   border-color: green;
   border-style: solid;
   border-top: none;
   border-bottom: none;
-  border-left: none;
+  border-right: none;
 }
 
 // Bit of styling for the button cursor.
@@ -156,7 +156,7 @@ h3{
 .resultBox{
   height: 60px;
   width: 400px;
-  margin: 60px auto 200px;
+  margin: 140px auto 200px;
   font-family: 'Freckle Face', cursive;
   text-transform: uppercase;
   font-size: 40px;
@@ -201,17 +201,22 @@ animation: shake 0.5s infinite;
   font-size: 25px;
   font-weight: bold;
   text-transform: uppercase;
-  background: lightgrey;
-  height: 400px;
-  width: 80%;
+  background: #ffff66;
+  color: dodgerblue;
+  height: 200px;
+  width: 60%;
+  border-radius: 10px;
+  font-family: 'Freckle Face', cursive;
+  padding: 30px 0 30px;
 }
 @media only screen and (max-width: 600px){
   .rotate{
     display: block;
-    margin: 0 auto;
+    margin: 0 20px 0 45px;
   }
-  h1{
+  .title{
     width: 80%;
+    font-size: 50px;
   }
   section{
     display: none;
