@@ -99,7 +99,7 @@ $(() => {
       $track.eq(index).removeClass('player');
       $track.eq(index + (Math.floor(Math.random() * 3) + 1 ) ).addClass('player');
       checkWinner();
-    } else if(isOnePlayer){
+    } else {
       $moveSound.play();
       $turnText.text('Player 1 get\'s moving!');
       $track.eq(index).removeClass('player');
@@ -220,6 +220,8 @@ $(() => {
           aiSalt();
         } else if(aiMoveDecider === 5 && PlayerTwoSaltRemaining === 2){
           aiReg();
+        } else{
+          aiReg();
         }
       }else if(playerOneTracker >= 15){
         aiMoveDecider = Math.floor(Math.random() * 5) + 1;
@@ -249,13 +251,11 @@ $(() => {
       moveGary();
     }
   }
-
   $move.on('click', moveEvent);
 
   // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
   function boostEvent(){
     if(!isOnePlayer){
-
       if(playerOneTurn){
         if(PlayerOneBoostRemaining === 1){
           $boostSound.play();
