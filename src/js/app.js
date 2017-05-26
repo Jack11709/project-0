@@ -18,17 +18,11 @@ $(() => {
   const $audioTheme = $('.theme')[0];
   $audioTheme.src = 'sounds/closing_theme.mp3';
   const $boostSound = $('.boostSound')[0];
-  $boostSound.src = 'sounds/boost_sound.mp3';
   const $saltSound = $('.saltSound')[0];
-  $saltSound.src = 'sounds/salt_sound.mp3';
   const $moveSound = $('.moveSound')[0];
-  $moveSound.src = 'sounds/move_sound.mp3';
   const $moveSoundTwo = $('.moveSound2')[0];
-  $moveSoundTwo.src = 'sounds/move_sound2.mp3';
   const $errorSound = $('.errorSound')[0];
-  $errorSound.src = 'sounds/error_sound.mp3';
   const $winSound = $('.winSound')[0];
-  $winSound.src = 'sounds/winning_sound.mp3';
   // Variables that update during the game, based on turn/abilties used.
   let $track = $('.track1');
   let playerOneTurn = true;
@@ -43,24 +37,18 @@ $(() => {
 
   // function that checks to see if either player is in a winning position, postion is determines if the index of the occupied space is equal to or greater than 21(the finish line), there are hidden run off boxes that also evaulate the winner if the final move would of take then player passed index 21.
   function checkWinner(){
-    if(playerOneTurn){
-      index = $('.track1.player').index();
-      if(index >= 21){
-        alwaysOnWin();
-        $finish1.addClass('player');
-        $finish1.addClass('winner');
+    index = playerOneTurn ? $('.track1.player').index() : $('.track2.player').index();
+    if(index >= 21) {
+      alwaysOnWin();
+      (playerOneTurn ? $finish1 : $finish2).addClass('player winner');
+
+      if(playerOneTurn) {
         $('.playerOneWin').removeClass('hide');
         $('.aiWin').addClass('hide');
-      }
-    } else if(!playerOneTurn){
-      index = $('.track2.player').index();
-      if(index >= 21){
-        alwaysOnWin();
-        $finish2.addClass('player');
-        $finish2.addClass('winner');
+      } else {
         if(!isOnePlayer){
           $('.playerTwoWin').removeClass('hide');
-        } else if(isOnePlayer){
+        } else {
           $('.aiWin').removeClass('hide');
         }
       }
@@ -77,23 +65,16 @@ $(() => {
 
   // this function determines whos turn it is and updates the on screen pormpt accordingly, it is fired directly after the click event on move, and it fired if a boost happens after updating the boost boolean, it works on the one variable which gets updated of playerOneTurn from true to false.
   function determineTurn(){
-    if(playerOneTurn){
-      locateGary();
-      playerOneTurn = false;
-      $track = $('.track2');
-      $turnText.text('Player 2\'s Turn');
-    } else if(!playerOneTurn){
-      locateGary();
-      playerOneTurn = true;
-      $track = $('.track1');
-      $turnText.text('Player 1\'s Turn');
-    }
+    locateGary();
+    $track = playerOneTurn ? $('.track2') : $('.track1');
+    $turnText.text(playerOneTurn ? 'Player 2\'s Turn' : 'Player 1\'s Turn');
+    playerOneTurn = !playerOneTurn;
   }
 
   // This function locates gary on the board, the seperate parts of the if else statement run based on which players turn it is, once doing so it fires off the moveGary function. Or if it detects the boost has been used(by it updating from 1 to 0 on the boost button click) if fires off the boostGary function instead, it then updates the boost count to 2 which informs the user the boost has been used when clicked again.
   function locateGary(){
+    index = playerOneTurn ? $('.track1.player').index() : $('.track2.player').index();
     if(playerOneTurn){
-      index = $('.track1.player').index();
       if(PlayerOneBoostRemaining > 0){
         $moveSound.play();
         moveGary();
@@ -101,8 +82,7 @@ $(() => {
         boostGary();
         PlayerOneBoostRemaining = 2;
       }
-    } else if (!playerOneTurn){
-      index = $('.track2.player').index();
+    } else{
       if(PlayerTwoBoostRemaining > 0){
         $moveSoundTwo.play();
         moveGary();
@@ -138,7 +118,7 @@ $(() => {
       $track.eq(index).removeClass('player');
       $track.eq(index + 5).addClass('player');
       checkWinner();
-    } else if(isOnePlayer){
+    } else {
       $boostSound.play();
       $track.eq(index).removeClass('player');
       $track.eq(index + 5).addClass('player');
@@ -154,6 +134,7 @@ $(() => {
   // the saltGary function. for the 2 player version.
   function saltGary() {
     if(!isOnePlayer){
+
       if(PlayerOneSaltRemaining === 0){
         PlayerOneSaltRemaining = 2;
         playerOneTurn = true;
@@ -261,98 +242,88 @@ $(() => {
   // This is the click event for the move button, when clicked it fires off the determineTurn function which sets in motion the locateGary and moveGary functions. Now has a seperate part for the 1 version which skips the turn checker.
   function moveEvent(){
     if(!isOnePlayer){
-      $move.on('click', () => {
-        determineTurn();
-      });
-    } else if(isOnePlayer) {
-      $move.on('click',() =>{
-        $track = $('.track1');
-        index = $('.track1.player').index();
-        moveGary();
-      });
+      determineTurn();
+    } else {
+      $track = $('.track1');
+      index = $('.track1.player').index();
+      moveGary();
     }
   }
+
+  $move.on('click', moveEvent);
 
   // this is the click event for the boost button, when clicked it checks first to see if the player has already used their boost, if not it updates that information and runs the determineTurn function like a normal move, when this reaches the locateGary function, it takes note that the boost has been used to fire off the boostGary function instead of the moveGary function. It then updates the boost remaining again, so that if another boost is attempted, it informs the user that their boost has already been used.
   function boostEvent(){
     if(!isOnePlayer){
-      $boost.on('click', () => {
-        if(playerOneTurn){
-          if(PlayerOneBoostRemaining === 1){
-            $boostSound.play();
-            PlayerOneBoostRemaining = 0;
-            determineTurn();
-          } else if(PlayerOneBoostRemaining === 2){
-            $errorSound.play();
-            $turnText.text('Player 1 boost already used!');
-          }
-        } else if (!playerOneTurn){
-          if(PlayerTwoBoostRemaining === 1){
-            $boostSound.play();
-            PlayerTwoBoostRemaining = 0;
-            determineTurn();
-          } else if(PlayerTwoBoostRemaining === 2){
-            $errorSound.play();
-            $turnText.text('Player 2 boost already used!');
-          }
-        }
-      });
-    } else if(isOnePlayer){
-      $boost.on('click',() =>{
+
+      if(playerOneTurn){
         if(PlayerOneBoostRemaining === 1){
-          $track = $('.track1');
-          index = $('.track1.player').index();
-          PlayerOneBoostRemaining = 2;
-          $turnText.text('Player 1 uses boost!');
-          boostGary();
-        } else if (PlayerOneBoostRemaining === 2){
+          $boostSound.play();
+          PlayerOneBoostRemaining = 0;
+          determineTurn();
+        } else if(PlayerOneBoostRemaining === 2){
           $errorSound.play();
-          $turnText.text('Player 1 has already used boost!');
+          $turnText.text('Player 1 boost already used!');
         }
-      });
+      } else {
+        if(PlayerTwoBoostRemaining === 1){
+          $boostSound.play();
+          PlayerTwoBoostRemaining = 0;
+          determineTurn();
+        } else if(PlayerTwoBoostRemaining === 2){
+          $errorSound.play();
+          $turnText.text('Player 2 boost already used!');
+        }
+      }
+    } else {
+      if(PlayerOneBoostRemaining === 1){
+        $track = $('.track1');
+        index = $('.track1.player').index();
+        PlayerOneBoostRemaining = 2;
+        $turnText.text('Player 1 uses boost!');
+        boostGary();
+      } else if (PlayerOneBoostRemaining === 2){
+        $errorSound.play();
+        $turnText.text('Player 1 has already used boost!');
+      }
     }
   }
-
+  $boost.on('click', boostEvent);
   // below is the event listener for the salt ability. Using this will stop your opponents next turn and give gary a normal garyMove while using it. If a player has already used their salt it informs them on the $turnText feedback.
   function saltEvent(){
     if(!isOnePlayer){
-      $salt.on('click',() => {
-        if(playerOneTurn){
-          if(PlayerOneSaltRemaining === 1){
-            $saltSound.play();
-            PlayerOneSaltRemaining = 0;
-            saltGary();
-          } else if(PlayerOneSaltRemaining === 2){
-            $errorSound.play();
-            $turnText.text('Player 1 has already used Salt!');
-          }
-        } else if(!playerOneTurn){
-          if(PlayerTwoSaltRemaining === 1){
-            $saltSound.play();
-            PlayerTwoSaltRemaining = 0;
-            saltGary();
-          } else if(PlayerTwoSaltRemaining === 2){
-            $errorSound.play();
-            $turnText.text('Player 2 has already used Salt!');
-          }
-        }
-      });
-    } else if(isOnePlayer){
-      $salt.on('click',() => {
+      if(playerOneTurn){
         if(PlayerOneSaltRemaining === 1){
-          PlayerOneSaltRemaining = 0;
           $saltSound.play();
+          PlayerOneSaltRemaining = 0;
           saltGary();
-        } else if(PlayerOneSaltRemaining ===2){
+        } else if(PlayerOneSaltRemaining === 2){
           $errorSound.play();
           $turnText.text('Player 1 has already used Salt!');
         }
-      });
+      } else {
+        if(PlayerTwoSaltRemaining === 1){
+          $saltSound.play();
+          PlayerTwoSaltRemaining = 0;
+          saltGary();
+        } else if(PlayerTwoSaltRemaining === 2){
+          $errorSound.play();
+          $turnText.text('Player 2 has already used Salt!');
+        }
+      }
+    } else {
+      if(PlayerOneSaltRemaining === 1){
+        PlayerOneSaltRemaining = 0;
+        $saltSound.play();
+        saltGary();
+      } else if(PlayerOneSaltRemaining ===2){
+        $errorSound.play();
+        $turnText.text('Player 1 has already used Salt!');
+      }
     }
   }
-
+  $salt.on('click', saltEvent);
   // Click event to start the game, removes the instruction page and then shows the racetrack, feedback box and controller. Have moved events that happen in both to the alwasy on start function.
-
   $start.on('click', () => {
     alwaysOnStart();
   });
@@ -370,26 +341,16 @@ $(() => {
     $board.removeClass('hide');
     $controller.removeClass('hide');
     $feedback.removeClass('hide');
-    moveEvent();
-    boostEvent();
-    saltEvent();
     $audioTheme.play();
   }
 
   // Event listener for the reset button, it basically hides all of the feedback from the remaining game and moves both player icons back to the start line, it also resets the salt and boost counters to 1 so that they can now be used again. funnction below that is some refactoring for commands that happen regardless of 1p or 2p mode.
-
-  if(!isOnePlayer){
-    $reset.on('click',() => {
-      alwaysOnReset();
-      $('.playerTwoWin').addClass('hide');
-    });
-  } else if(isOnePlayer){
-    $reset.on('click',() => {
-      alwaysOnReset();
-      $('.aiWin').addClass('hide');
-      $turnText.text('Player 1\'s time to shine!');
-    });
+  function reset(){
+    alwaysOnReset();
+    !isOnePlayer ? $('.playerTwoWin').addClass('hide') : $('.aiWin').addClass('hide');
   }
+  $reset.on('click', reset);
+
   function alwaysOnReset(){
     $('.track1').removeClass('player winner');
     $('.start1').addClass('player');
